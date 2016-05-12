@@ -23,8 +23,6 @@
 #include "SPI.h"
 #include <ADF4350.h>
 
-
-
 // NOTE: Currently, set up for channel spacing of 10Mhz; might ammend later if needed,
 //  but this was easy and takes care of forseeable applications...
 //  This means we'll be operating in int-N mode.
@@ -40,10 +38,6 @@ ADF4350::ADF4350(byte ssPin) {
     pinMode(_ssPin, OUTPUT);
     digitalWrite(_ssPin, HIGH);
 }
-
-
-
-
 
 // Initializes a new ADF4350 object, with refClk (in Mhz), and initial frequency.
 void ADF4350::initialize(int freq, int refClk = 10){
@@ -64,9 +58,7 @@ void ADF4350::initialize(int freq, int refClk = 10){
     ADF4350::setR3();
     ADF4350::setR5();
 
-
     ADF4350::setFreq(freq);
-//    ADF4350::update();
 }
 
 // gets current frequency setting
@@ -105,8 +97,6 @@ void ADF4350::setFreq(int freq){
     ADF4350::update();
 }
 
-
-
 // updates dynamic registers, and writes values to PLL board
 void ADF4350::update(){
     // updates registers with dynamic values...
@@ -131,7 +121,6 @@ void ADF4350::powerDown(bool pd){
     _powerdown = pd;
     ADF4350::setR2();
     ADF4350::update();
-
 }
 
 void ADF4350::rfEnable(bool rf){
@@ -195,7 +184,6 @@ void ADF4350::setR3(){
 }
 
 void ADF4350::setR4(){
-
     unsigned long r4 = (_feedbackType << 23) + // divided/fundamental feedback
         (_divider << 20) +
         (80 << 12) + // band select clock divider
@@ -208,22 +196,16 @@ void ADF4350::setR4(){
 
    byte r4Ary[] = { lowByte(r4 >> 24), lowByte(r4 >> 16), lowByte(r4 >> 8), lowByte(r4) };
    memcpy(&_r4, &r4Ary, sizeof(r4Ary));
-
-
 }
 
 void ADF4350::setR5(){
-
-    unsigned long r5 = (1 << 22) + (3<<19) + 5; // lock detect pin mode = digital lock detect
+   unsigned long r5 = (1 << 22) + (3<<19) + 5; // lock detect pin mode = digital lock detect
    byte r5Ary[] = { lowByte(r5 >> 24), lowByte(r5 >> 16), lowByte(r5 >> 8), lowByte(r5) };
    memcpy(&_r5, &r5Ary, sizeof(r5Ary));
-
 }
 // Writes SPI to particular register.
 //      registerInfo is a 2-element array which contains [register, number of bytes]
 void ADF4350::writeRegister(byte data[]){
-
-
     digitalWrite(_ssPin, LOW);
 
     // Writes the data
@@ -232,6 +214,4 @@ void ADF4350::writeRegister(byte data[]){
     }
 
     digitalWrite(_ssPin, HIGH);
-
 }
-

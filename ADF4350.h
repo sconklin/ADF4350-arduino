@@ -66,8 +66,6 @@ class ADF4350
         // register values
         byte _r0[4], _r1[4], _r2[4], _r3[4], _r4[4], _r5[4];
 
-
-
         // function to write data to register.
         void setR0();
         void setR1();
@@ -76,10 +74,6 @@ class ADF4350
         void setR4();
         void setR5();
         void writeRegister(byte[4]);
-
-
-
 };
- 
 
 #endif
